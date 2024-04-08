@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kelime Tahmin Etme Oyunu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: black;
+            color: white;
+        }
+
+        .gizliResim {
+            display: none;
+        }
+
+        #resimDiv {
+            display: flex;
+            justify-content: center;
+        }
+
+        #resim {
+            box-shadow: 1px 1px 10px 1px white;
+        }
+
+        #gizliKelime {
+            padding: 25px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Game:</h1>
+    <div id="resimDiv">
+        <img id="resim" src="almeda.jpeg" alt="Resim">
+    </div>
+    <div id="gizliKelime"></div>
+    <p>Heriflerden birini qeyd edin:</p>
+    <button onclick="tahminEt('a')">A</button>
+    <button onclick="tahminEt('b')">B</button>
+    <button onclick="tahminEt('c')">C</button>
+    <button onclick="tahminEt('d')">D</button>
+    <button onclick="tahminEt('e')">E</button>
+    <button onclick="tahminEt('f')">F</button>
+    <button onclick="tahminEt('g')">G</button>
+    <button onclick="tahminEt('h')">H</button>
+    <button onclick="tahminEt('i')">I</button>
+    <button onclick="tahminEt('j')">J</button>
+    <button onclick="tahminEt('k')">K</button>
+    <button onclick="tahminEt('l')">L</button>
+    <button onclick="tahminEt('m')">M</button>
+    <button onclick="tahminEt('n')">N</button>
+    <button onclick="tahminEt('o')">O</button>
+    <button onclick="tahminEt('p')">P</button>
+    <button onclick="tahminEt('q')">Q</button>
+    <button onclick="tahminEt('r')">R</button>
+    <button onclick="tahminEt('s')">S</button>
+    <button onclick="tahminEt('t')">T</button>
+    <button onclick="tahminEt('u')">U</button>
+    <button onclick="tahminEt('v')">V</button>
+    <button onclick="tahminEt('w')">W</button>
+    <button onclick="tahminEt('x')">X</button>
+    <button onclick="tahminEt('y')">Y</button>
+    <button onclick="tahminEt('z')">Z</button>
+    <div id="sonuc"></div>
+
+    <script>
+        // Kelimeler ve onlara ait resimlerin listesi
+        var kelimeler = ["almeda", "arda", "emin", "maksim", "messi", "neymar", "ozobic", "sahruddin"];
+        var resimler = ["almeda.jpeg", "arda.jpeg", "emin.jpeg", "maksim.jpeg", "messi.jpeg", "neymar.jpeg", "ozobic.jpeg", "sahruddin.jpeg"];
+        var secilenIndex = Math.floor(Math.random() * kelimeler.length);
+        var secilenKelime = kelimeler[secilenIndex];
+        var gizliKelime = "_".repeat(secilenKelime.length);
+        var gizliResimler = document.getElementsByClassName("gizliResim");
+        var kalanSans = 10;
+        var kazanmaDurumu = false;
+
+        // Gizli resmi göster
+        document.getElementById("resim").src = resimler[secilenIndex];
+        document.getElementById("resim").style.display = "block";
+
+        // Gizli kelimeyi göster
+        document.getElementById("gizliKelime").innerText = gizliKelime;
+
+        // Tahmin etme fonksiyonu
+        function tahminEt(harf) {
+            if (!kazanmaDurumu) {
+                var harfIndex = secilenKelime.indexOf(harf);
+                // Harfin doğru tahmin edilip edilmediğini kontrol et
+                if (harfIndex > -1) {
+                    // Harf doğru tahmin edildiyse
+                    while (harfIndex !== -1) {
+                        gizliKelime = gizliKelime.substring(0, harfIndex) + harf + gizliKelime.substring(harfIndex + 1);
+                        harfIndex = secilenKelime.indexOf(harf, harfIndex + 1);
+                    }
+                    document.getElementById("gizliKelime").innerText = gizliKelime;
+                    document.getElementById("sonuc").innerText = "Doğru tahmin!";
+                    // Doğru tahmin edilen harflere karşılık gelen resimleri göster
+                } else {
+                    // Harf yanlış tahmin edildiyse
+                    document.getElementById("sonuc").innerText = "Yanlış tahmin! Kalan şans: " + --kalanSans;
+                    if (kalanSans === 0) {
+                        document.getElementById("sonuc").innerText = "Üzgünüm, kaybettiniz. Doğru kelime: " + secilenKelime;
+                        // Yanlış tahmin sayısı sıfıra ulaştığında kullanıcıya kaybettiğini belirten bir mesaj göster
+                    }
+                }
+                // Oyunun kazanılıp kazanılmadığını kontrol et
+                if (gizliKelime === secilenKelime) {
+                    document.getElementById("sonuc").innerText = "Tebrikler! Kelimeyi doğru tahmin ettiniz: " + secilenKelime;
+                    // Gizli kelimeyi doğru tahmin ettiğinde kullanıcıya kazandığını belirten bir mesaj göster
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
